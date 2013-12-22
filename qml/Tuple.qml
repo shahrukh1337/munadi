@@ -1,8 +1,9 @@
 import QtQuick 2.1
 import QtQuick.Layouts 1.0
+import QtGraphicalEffects 1.0
 
 Rectangle {
-    //color: "red"
+
     width: 1; height: 1
     Layout.fillWidth: true
     Layout.fillHeight: true
@@ -18,5 +19,6 @@ Rectangle {
         anchors.centerIn: parent
         font.pixelSize: parent.height / 2
         wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+        //Layout.minimumWidth: width
     }
 }

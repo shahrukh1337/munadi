@@ -1,7 +1,7 @@
 # Add more folders to ship with the application, here
-folder_01.source = qml/munadi_ng
-folder_01.target = qml
-DEPLOYMENTFOLDERS = folder_01
+#folder_01.source = qml/munadi_ng
+#folder_01.target = qml
+#DEPLOYMENTFOLDERS = folder_01
 
 # Additional import path used to resolve QML modules in Creator's code model
 QML_IMPORT_PATH = ./
@@ -11,8 +11,19 @@ QML_IMPORT_PATH = ./
 # CONFIG += mobility
 # MOBILITY +=
 
+QT += core gui widgets network multimedia
+CONFIG += qt
+
 # The .cpp file which was generated for your project. Feel free to hack it.
-SOURCES += main.cpp
+SOURCES += cpp/main.cpp \
+    cpp/mainwindow.cpp \
+    cpp/munadiengine.cpp \
+    cpp/updater.cpp \
+    cpp/settingsdialog.cpp \
+    cpp/libitl/astro.c \
+    cpp/libitl/hijri.c \
+    cpp/libitl/prayer.c \
+    cpp/libitl/umm_alqura.c
 
 # Installation path
 # target.path =
@@ -24,9 +35,27 @@ qtcAddDeployment()
 RESOURCES += \
     rc.qrc
 
-OTHER_FILES += \
-    main.qml \
-    Tuple.qml \
-    Table.qml \
-    Extras.qml \
-    Prayer.qml
+OTHER_FILES +=          \
+    qml/main.qml        \
+    qml/Tuple.qml       \
+    qml/Table.qml       \
+    qml/Extras.qml      \
+    qml/Prayer.qml \
+    qml/Button.qml \
+    qml/Info.qml \
+    qml/Compass.qml \
+    qml/Settings.qml \
+    qml/Setting.qml
+
+HEADERS +=              \
+    cpp/mainwindow.h    \
+    cpp/munadiengine.h  \
+    cpp/updater.h       \
+    cpp/settings.h      \
+    cpp/settingsdialog.h \
+    cpp/libitl/astro.h \
+    cpp/libitl/hijri.h \
+    cpp/libitl/prayer.h
+
+FORMS += \
+    cpp/settingsdialog.ui

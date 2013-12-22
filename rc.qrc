@@ -1,9 +1,18 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
-        <file>Tuple.qml</file>
-        <file>Table.qml</file>
-        <file>Extras.qml</file>
-        <file>Prayer.qml</file>
+        <file>qml/main.qml</file>
+        <file>qml/Tuple.qml</file>
+        <file>qml/Table.qml</file>
+        <file>qml/Extras.qml</file>
+		<file>qml/Button.qml</file>
+        <file>qml/Prayer.qml</file>
+		<file>qml/Info.qml</file>
+		<file>qml/Compass.qml</file>
+		<file>qml/Settings.qml</file>
+		<file>qml/Setting.qml</file>
+		<file>img/settings.png</file>
+		<file>img/compass.png</file>
+		<file>img/about.png</file>
+		<file>img/info.png</file>
     </qresource>
 </RCC>

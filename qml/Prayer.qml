@@ -1,11 +1,12 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
+import QtGraphicalEffects 1.0
 
 GridLayout {
     Layout.fillWidth: true
     Layout.fillHeight: true
-    columnSpacing: 1
+    columnSpacing: 0
 
     property alias prayerName: prayer.text
     property alias prayerTime: time.text
