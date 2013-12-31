@@ -6,14 +6,14 @@ import Qt.labs.settings 1.0
 
 Rectangle {
     id: main
-    color: "#F7F7EB"
+    color: "steelblue"
 
     property bool mirror: false
 
     Extras {
         id: utils
         anchors.fill: parent
-        anchors.margins: 6
+        anchors.margins: 10
         Layout.column: main.mirror === true ? 0 : 1
     }
 }

@@ -1,10 +1,8 @@
 import QtQuick 2.2
 import QtQuick.Layouts 1.1
-import QtQuick.Controls 1.1 as QQC
 
 Rectangle {
-    color: "#F7F7EB"
-    //border.width: 3
+    color: parent.color
     width: 1; height: 1
 
     Layout.fillWidth: true
@@ -15,7 +13,7 @@ Rectangle {
         width: parent.width
         anchors.top: parent.top
         anchors.bottom: buttons.top
-        anchors.margins: 3
+        anchors.bottomMargin: 10
         anchors.horizontalCenter: parent.horizontalCenter
 
         Loader {
@@ -30,15 +28,14 @@ Rectangle {
     Rectangle {
         id: buttons
         anchors.bottom: parent.bottom
-        anchors.margins: 3
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width
-        height: (parent.height / 10)
+        height: (parent.height / 15)
 
         color: parent.color
 
         RowLayout {
-            spacing: 4
+            spacing: 10
             anchors.fill: parent
             layoutDirection: main.mirror === true ? "RightToLeft" : "LeftToRight"
 

@@ -15,14 +15,12 @@ QT += core gui widgets network multimedia
 CONFIG += qt
 
 # The .cpp file which was generated for your project. Feel free to hack it.
-SOURCES += cpp/main.cpp \
-    cpp/mainwindow.cpp \
-    cpp/munadiengine.cpp \
-    cpp/updater.cpp \
-    cpp/settingsdialog.cpp \
-    cpp/libitl/astro.c \
-    cpp/libitl/hijri.c \
-    cpp/libitl/prayer.c \
+SOURCES += cpp/main.cpp     \
+    cpp/munadiengine.cpp    \
+    cpp/updater.cpp         \
+    cpp/libitl/astro.c      \
+    cpp/libitl/hijri.c      \
+    cpp/libitl/prayer.c     \
     cpp/libitl/umm_alqura.c
 
 # Installation path
@@ -35,27 +33,24 @@ qtcAddDeployment()
 RESOURCES += \
     rc.qrc
 
-OTHER_FILES +=          \
-    qml/main.qml        \
-    qml/Tuple.qml       \
-    qml/Table.qml       \
-    qml/Extras.qml      \
-    qml/Prayer.qml \
-    qml/Button.qml \
-    qml/Info.qml \
-    qml/Compass.qml \
-    qml/Settings.qml \
-    qml/Setting.qml
+OTHER_FILES +=              \
+    qml/main.qml            \
+    qml/Tuple.qml           \
+    qml/Table.qml           \
+    qml/Extras.qml          \
+    qml/Prayer.qml          \
+    qml/Button.qml          \
+    qml/Info.qml            \
+    qml/Compass.qml         \
+    qml/Settings.qml        \
+    qml/SettingTitle.qml    \
+    qml/SettingInfo.qml     \
+    qml/SettingEntry.qml
 
-HEADERS +=              \
-    cpp/mainwindow.h    \
-    cpp/munadiengine.h  \
-    cpp/updater.h       \
-    cpp/settings.h      \
-    cpp/settingsdialog.h \
-    cpp/libitl/astro.h \
-    cpp/libitl/hijri.h \
-    cpp/libitl/prayer.h
-
-FORMS += \
-    cpp/settingsdialog.ui
+HEADERS +=                  \
+    cpp/munadiengine.h      \
+    cpp/updater.h           \
+    cpp/libitl/astro.h      \
+    cpp/libitl/hijri.h      \
+    cpp/libitl/prayer.h \
+    cpp/settingscache.h

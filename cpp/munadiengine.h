@@ -5,16 +5,17 @@
 #include <QtCore>
 #include "libitl/prayer.h"
 #include "libitl/hijri.h"
-#include "settings.h"
+#include "settingscache.h"
 #include <QStringList>
+#include <QMenu>
+#include <QSystemTrayIcon>
 
-#if defined(USE_SFML)
-#include <SFML/Audio.hpp>
-#else
+
 #include <QtMultimedia/QMediaPlayer>
-#endif
 
 #define dout qDebug()
+
+#define APP_VERSION "14.01"
 
 class MunadiEngine : public QObject
 {
@@ -22,7 +23,7 @@ class MunadiEngine : public QObject
 
 public:
 
-    MunadiEngine(void * parent = 0);
+    MunadiEngine(class QQuickView *parent = 0);
     virtual ~MunadiEngine();
 
     enum PrayerType{Fajr, Sunrise, Duhr, Asr, Magrib, Isha};
@@ -43,16 +44,16 @@ public:
     Q_INVOKABLE QString getCurrPrayerLabel();
     Q_INVOKABLE QString getTimeDifference();
     Q_INVOKABLE QString getLocationName();
-    Q_INVOKABLE void ShowSettings();
+    Q_INVOKABLE double getQibla();
+    Q_INVOKABLE void setStartup(bool set);
+    Q_INVOKABLE void refreshSettingsCache();
+    Q_INVOKABLE void setVolume(int level, bool mute);
+    Q_INVOKABLE QString getVersionNo() { return APP_VERSION; }
 
-    Settings * settings;
+    SettingsCache * settingsCache;
     QTime testTime;
 
-#if defined(USE_SFML)
-    sf::Music * athanObject;
-#else
     QMediaPlayer * athanObject;
-#endif
 
 protected:
     virtual bool eventFilter(QObject *object, QEvent *);
@@ -60,11 +61,15 @@ protected:
 
 private:
 
-    void * parent;
+    class QQuickView * parent;
     QTimer * timer;
     QString nextPrayerLabel;
     QString currentPrayerLabel;
     QString hijriEvent;
+    QSystemTrayIcon * tray;
+    QMenu * trayMenu;
+    void createTrayMenu();
+    class Updater * updater;
 
     bool init();
 
@@ -73,8 +78,10 @@ public slots:
     void stopAthan();
     void checkAthan();
     void calculatePrayer();
-    void calculateAngle();
+    void showMainWindow();
     void onMediaStatusChanged(QMediaPlayer::MediaStatus);
+    void iconActivated(QSystemTrayIcon::ActivationReason reason);
+    void toggleView();
 
 signals:
     void athanStarted();

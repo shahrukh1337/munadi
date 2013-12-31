@@ -1,4 +1,4 @@
-#include <QtGui/QGuiApplication>
+#include <QApplication>
 #include "qtquick2applicationviewer.h"
 
 #include <QQmlContext>
@@ -6,7 +6,7 @@
 
 int main(int argc, char *argv[])
 {
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
     app.setOrganizationName("Munadi Project");
     app.setOrganizationDomain("munadi.org");
     app.setApplicationName("Muandi");
@@ -15,9 +15,15 @@ int main(int argc, char *argv[])
     MunadiEngine engine(&window);
 
     window.rootContext()->setContextProperty("engine", &engine);
+    window.rootContext()->setContextProperty("settingsCache", engine.settingsCache);
     window.setSource(QUrl("qrc:/qml/main.qml"));
     window.installEventFilter(&engine);
-    window.showExpanded();
 
-    return app.exec();
+    if(argc >= 2 && strcmp(argv[1], "-startup") == 0)
+        return app.exec();
+    else
+    {
+        window.showExpanded();
+        return app.exec();
+    }
 }

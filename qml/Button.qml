@@ -14,7 +14,7 @@ Rectangle {
         id: img
         anchors.fill: parent
         fillMode: Image.PreserveAspectFit
-        anchors.margins: 10
+        anchors.margins: 4
     }
 
     MouseArea {

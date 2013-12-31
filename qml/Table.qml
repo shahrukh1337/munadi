@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.0
 
 Rectangle {
 
-    color: "#F7F7EB"
+    color: main.color
     width: 1; height: 1
     Layout.fillWidth: true
     Layout.fillHeight: true
@@ -15,7 +15,6 @@ Rectangle {
     }
 
     ColumnLayout {
-        anchors.margins: 3
         anchors.fill: parent
         spacing: 10
 
@@ -50,6 +49,7 @@ Rectangle {
         }
 
         Rectangle {
+            id: tlc
             width: 1; height: 1
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -59,23 +59,23 @@ Rectangle {
                 anchors.centerIn: parent
                 font.pixelSize: parent.height / 3
                 font.italic: true
+            }
+        }
 
-                Connections {
-                    target: engine
-                    onAthanStarted: {
-                        console.log("onAthanStarted");
-                        updateTimeLeft();
-                    }
-                    onAthanStopped: {
-                        console.log("onAthanStopped");
-                        updateTimeLeft();
-                    }
-                    onMinuteElapsed: {
-                        console.log("onUpdateTimeLeft")
-                        updatePrayerTimes();
-                        updateTimeLeft();
-                    }
-                }
+        Connections {
+            target: engine
+            onAthanStarted: {
+                console.log("onAthanStarted");
+                updateTimeLeft();
+            }
+            onAthanStopped: {
+                console.log("onAthanStopped");
+                updateTimeLeft();
+            }
+            onMinuteElapsed: {
+                console.log("onUpdateTimeLeft")
+                updatePrayerTimes();
+                updateTimeLeft();
             }
         }
     }
@@ -91,9 +91,19 @@ Rectangle {
     }
 
     function updateTimeLeft() {
-console.log("updateTimeLeft")
-        timeLeft.text = engine.isAthanPlaying()
-                ? engine.getCurrPrayerLabel() + qsTr(" prayer time ...")
-                : engine.getNextPrayerLabel() + " in " + engine.getTimeDifference();
+        console.log("updateTimeLeft")
+        if(engine.isAthanPlaying()) {
+            timeLeft.text = engine.getCurrPrayerLabel() + qsTr(" prayer time ...");
+        }
+        else {
+            var prayerLabel = engine.getNextPrayerLabel();
+
+            if(prayerLabel === "") {
+                tlc.visible = false;
+            } else {
+                tlc.visible = true;
+                timeLeft.text = prayerLabel + " in " + engine.getTimeDifference();
+            }
+        }
     }
 }
