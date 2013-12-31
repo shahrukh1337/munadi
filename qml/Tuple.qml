@@ -1,6 +1,5 @@
-import QtQuick 2.1
-import QtQuick.Layouts 1.0
-import QtGraphicalEffects 1.0
+import QtQuick 2.2
+import QtQuick.Layouts 1.1
 
 Rectangle {
 
@@ -13,12 +12,8 @@ Rectangle {
 
     Text {
         id: label
-        //width: parent.width
-        //height: parent.height
-        //anchors.leftMargin: 10
         anchors.centerIn: parent
         font.pixelSize: parent.height / 2
         wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-        //Layout.minimumWidth: width
     }
 }

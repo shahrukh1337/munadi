@@ -16,7 +16,7 @@
 		<file>img/compass.png</file>
 		<file>img/info.png</file>
 		<file>img/munadi.png</file>
-                <file>img/arrow.png</file>
+        <file>img/arrow.png</file>
 		<file>data/countries.tsv</file>
 		<file>data/cities.tsv</file>
     </qresource>

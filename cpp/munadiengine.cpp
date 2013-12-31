@@ -435,6 +435,7 @@ bool MunadiEngine::init()
     QSettings qSettings;
     QString athanFile = QApplication::applicationDirPath() + "/audio/athan.mp3";
     dout << "Athan file: " << athanFile;
+    dout << "libPaths: " << QApplication::libraryPaths();
 
     if( (athanObject = new QMediaPlayer()) == 0)    exit(1);
     athanObject->setMedia(QUrl::fromLocalFile((athanFile)));
