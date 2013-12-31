@@ -406,9 +406,8 @@ ScrollView {
                     text: qsTr("About Munadi")
                 }
                 SettingInfo {
-                    text: "<p>Munadi - Simple Athan Program.<br/>" +
-                          "For more info, visit <a href=\"http://munadi.org\">Munadi.org</a></p>" +
-                          "<br/>" + "Version: " + engine.getVersionNo() + "<br/>"
+                    text: qsTr("<p>Munadi - Simple Athan Program. For more info, visit <a href=\"http://munadi.org\">Munadi.org</a></p><br/>")
+                               + qsTr("Version: ") + engine.getVersionNo() + "<br/>"
                 }
             }
         }

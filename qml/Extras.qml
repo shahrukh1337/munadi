@@ -13,7 +13,7 @@ Rectangle {
         width: parent.width
         anchors.top: parent.top
         anchors.bottom: buttons.top
-        anchors.bottomMargin: 10
+        anchors.bottomMargin: main.margin
         anchors.horizontalCenter: parent.horizontalCenter
 
         Loader {

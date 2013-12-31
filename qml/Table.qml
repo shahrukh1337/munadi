@@ -16,7 +16,7 @@ Rectangle {
 
     ColumnLayout {
         anchors.fill: parent
-        spacing: 10
+        spacing: main.margin
 
         Prayer {
             id: fajr
