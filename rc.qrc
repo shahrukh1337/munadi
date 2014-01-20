@@ -4,20 +4,20 @@
         <file>qml/Tuple.qml</file>
         <file>qml/Table.qml</file>
         <file>qml/Extras.qml</file>
-		<file>qml/Button.qml</file>
+        <file>qml/Button.qml</file>
         <file>qml/Prayer.qml</file>
-		<file>qml/Info.qml</file>
-		<file>qml/Compass.qml</file>
-		<file>qml/Settings.qml</file>
-		<file>qml/SettingEntry.qml</file>
-		<file>qml/SettingTitle.qml</file>
-		<file>qml/SettingInfo.qml</file>
-		<file>img/settings.png</file>
-		<file>img/compass.png</file>
-		<file>img/info.png</file>
-		<file>img/munadi.png</file>
+        <file>qml/Info.qml</file>
+        <file>qml/Compass.qml</file>
+        <file>qml/Settings.qml</file>
+        <file>qml/SettingTitle.qml</file>
+        <file>qml/SettingInfo.qml</file>
+        <file>img/settings.png</file>
+        <file>img/compass.png</file>
+        <file>img/info.png</file>
+        <file>img/munadi.png</file>
         <file>img/arrow.png</file>
-		<file>data/countries.tsv</file>
-		<file>data/cities.tsv</file>
+        <file>data/countries.tsv</file>
+        <file>data/cities.tsv</file>
+        <file>data/ar.qm</file>
     </qresource>
 </RCC>

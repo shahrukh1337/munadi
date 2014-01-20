@@ -15,5 +15,6 @@ Rectangle {
         anchors.centerIn: parent
         font.pixelSize: parent.height / 2
         wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+        style: Text.Sunken
     }
 }

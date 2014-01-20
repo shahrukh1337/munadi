@@ -1,6 +1,6 @@
 # Add more folders to ship with the application, here
-#folder_01.source = qml/munadi_ng
-#folder_01.target = qml
+#folder_01.source = ../audio
+#folder_01.target = audio
 #DEPLOYMENTFOLDERS = folder_01
 
 # Additional import path used to resolve QML modules in Creator's code model
@@ -11,17 +11,27 @@ QML_IMPORT_PATH = ./
 # CONFIG += mobility
 # MOBILITY +=
 
-QT += core gui widgets network multimedia
 CONFIG += qt
+DEFINES += ARABIC
+
+win32 {
+QT += core gui multimedia widgets network
+}
+
+android {
+ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+QT += core gui multimedia sensors
+}
 
 # The .cpp file which was generated for your project. Feel free to hack it.
 SOURCES += cpp/main.cpp     \
     cpp/munadiengine.cpp    \
-    cpp/updater.cpp         \
     cpp/libitl/astro.c      \
     cpp/libitl/hijri.c      \
     cpp/libitl/prayer.c     \
     cpp/libitl/umm_alqura.c
+
+!android:SOURCES += cpp/updater.cpp
 
 # Installation path
 # target.path =
@@ -45,12 +55,19 @@ OTHER_FILES +=              \
     qml/Settings.qml        \
     qml/SettingTitle.qml    \
     qml/SettingInfo.qml     \
-    qml/SettingEntry.qml
+    android/AndroidManifest.xml
+
+lupdate_only{
+SOURCES = qml/*.qml
+}
 
 HEADERS +=                  \
     cpp/munadiengine.h      \
-    cpp/updater.h           \
     cpp/libitl/astro.h      \
     cpp/libitl/hijri.h      \
     cpp/libitl/prayer.h \
     cpp/settingscache.h
+
+!android:HEADERS += cpp/updater.h
+
+TRANSLATIONS += data/ar.ts

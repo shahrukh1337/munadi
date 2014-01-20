@@ -14,14 +14,13 @@ Updater::Updater(QObject *parent) :
     QObject(parent)
 {
     QUrlQuery jadeedParams;
-#ifdef Q_OS_WIN
-    jadeedParams.addQueryItem("os","win");
-#elif Q_OS_OSX
-    jadeedParams.addQueryItem("os","osx");
-#elif Q_OS_LINUX
-    jadeedParams.addQueryItem("os","linux");
-#endif
-
+//#if defined Q_OS_WIN
+//    jadeedParams.addQueryItem("os","win");
+//#elseif defined Q_OS_OSX
+//    jadeedParams.addQueryItem("os","osx");
+//#elseif Q_OS_LINUX
+//    jadeedParams.addQueryItem("os","linux");
+//#endif
 
     QUrl jadeed(QSettings().value("General/updateURL", "http://munadi.org/jadeed.php").toString());
     jadeed.setQuery(jadeedParams);

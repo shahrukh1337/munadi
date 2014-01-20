@@ -5,7 +5,7 @@ import Qt.labs.settings 1.0
 
 ScrollView {
     id: sv
-
+    flickableItem.flickableDirection: Flickable.VerticalFlick
     Component.onDestruction: {
         engine.refreshSettingsCache();
     }
@@ -13,20 +13,20 @@ ScrollView {
     ColumnLayout {
         spacing: 20
         width: sv.width - 30    // So the vertical scroll bar doesn't appear
-        x: 10
+        x: 10   //left padding didn't work
         anchors.bottomMargin: 20
         anchors.topMargin: 20
 
-        SettingEntry {} // Top padding
+        RowLayout {} // Top padding
 
-        SettingEntry {
+        RowLayout {
             ColumnLayout {
                 SettingTitle {
                     text: qsTr("Show on Athan?")
                 }
 
                 SettingInfo {
-                    text: qsTr("Munadi window will pop up during Athan if on.")
+                    text: qsTr("Munadi window will pop up during Athan if on")
                 }
             }
 
@@ -41,14 +41,14 @@ ScrollView {
             property alias showOnAthan: soa.checked
         }
 
-        SettingEntry {
+        RowLayout {
             ColumnLayout {
                 SettingTitle {
                     text: qsTr("Start up?")
                 }
 
                 SettingInfo {
-                    text: qsTr("Munadi will open when computer starts if on.")
+                    text: qsTr("Munadi will open when computer starts if on")
                 }
             }
 
@@ -58,14 +58,14 @@ ScrollView {
             }
         }
 
-        SettingEntry {
+        RowLayout {
             ColumnLayout {
                 SettingTitle {
                     text: qsTr("Check for updates")
                 }
 
                 SettingInfo {
-                    text: qsTr("Munadi will check for any updates when it starts.")
+                    text: qsTr("Munadi will check for any updates when it starts")
                 }
             }
 
@@ -85,19 +85,17 @@ ScrollView {
             }
         }
 
-        SettingEntry {
+        RowLayout {
             ColumnLayout {
                 SettingTitle {
                     text: qsTr("Volume")
                 }
 
-                SettingEntry {
-                    CheckBox {
-                        id: muted
-                        text: qsTr("Mute Athan")
-                        onCheckedChanged: engine.setVolume(vol.value, muted.checked)
+                RowLayout {
+                    Text {
+                        text: vol.value + " %"
+                        Layout.minimumWidth: font.pixelSize * 3 //Stops sliders from shivering when changing val
                     }
-
                     Slider {
                         id: vol
                         Layout.fillWidth: true
@@ -106,91 +104,132 @@ ScrollView {
                         maximumValue: 100
                         onValueChanged: engine.setVolume(vol.value, muted.checked)
                     }
+                }
+
+                RowLayout {
                     Text {
-                        text: vol.value + "%"
+                        text: qsTr("Mute Athan")
+                        Layout.fillWidth: true
+                    }
+                    Switch {
+                        id: muted
+                        onCheckedChanged: engine.setVolume(vol.value, muted.checked)
                     }
                 }
             }
         }
 
-        SettingEntry {
+        RowLayout {
             ColumnLayout {
                 SettingTitle {
-                    text: qsTr("Prayer time adjustments")
+                    text: qsTr("Adjustment")
                 }
 
-                RowLayout {
-                    CheckBox {
-                        id: fajrEnabled
-                        Layout.fillWidth: true
-                        text: qsTr("Fajr")
-                        checked: true
+                GridLayout {
+                    columns: 4
+
+                    Text {
+                        text: qsTr("Fajr: ")
                     }
-                    SpinBox {
+                    Text {
+                        text: fajrAdjustment.value.toFixed() > 0
+                              ? "+" + fajrAdjustment.value.toFixed()
+                              : fajrAdjustment.value.toFixed()
+                        Layout.minimumWidth: font.pixelSize * 2 //Stops sliders from shivering when changing val, 1 enough for all 5!
+                    }
+                    Slider {
                         id: fajrAdjustment
-                        minimumValue: -99
-                        maximumValue: 99
-                        suffix: qsTr(" Minutes")
-                    }
-                }
-
-                RowLayout {
-                    CheckBox {
-                        id: duhrEnabled
                         Layout.fillWidth: true
-                        text: qsTr("Duhr")
+                        minimumValue: -20
+                        maximumValue: 20
+                        stepSize: 1
+
+                    }
+                    Switch {
+                        id: fajrEnabled
                         checked: true
                     }
-                    SpinBox {
+
+                    Text {
+                        text: qsTr("Duhr: ")
+                    }
+                    Text {
+                        text: duhrAdjustment.value.toFixed() > 0
+                              ? "+" + duhrAdjustment.value.toFixed()
+                              : duhrAdjustment.value.toFixed()
+                    }
+                    Slider {
                         id: duhrAdjustment
-                        minimumValue: -99
-                        maximumValue: 99
-                        suffix: qsTr(" Minutes")
-                    }
-                }
-
-                RowLayout {
-                    CheckBox {
-                        id: asrEnabled
                         Layout.fillWidth: true
-                        text: qsTr("Asr")
+                        minimumValue: -20
+                        maximumValue: 20
+                        stepSize: 1
+                    }
+                    Switch {
+                        id: duhrEnabled
                         checked: true
                     }
-                    SpinBox {
+
+
+                    Text {
+                        text: qsTr("Asr: ")
+                    }
+                    Text {
+                        text: asrAdjustment.value.toFixed() > 0
+                              ? "+" + asrAdjustment.value.toFixed()
+                              : asrAdjustment.value.toFixed()
+                    }
+                    Slider {
                         id: asrAdjustment
-                        minimumValue: -99
-                        maximumValue: 99
-                        suffix: qsTr(" Minutes")
-                    }
-                }
-
-                RowLayout {
-                    CheckBox {
-                        id: magribEnabled
                         Layout.fillWidth: true
-                        text: qsTr("Magrib")
+                        minimumValue: -20
+                        maximumValue: 20
+                        stepSize: 1
+                    }
+                    Switch {
+                        id: asrEnabled
                         checked: true
                     }
-                    SpinBox {
+
+
+                    Text {
+                        text: qsTr("Magrib: ")
+                    }
+                    Text {
+                        text: magribAdjustment.value.toFixed() > 0
+                              ? "+" + magribAdjustment.value.toFixed()
+                              : magribAdjustment.value.toFixed()
+                    }
+                    Slider {
                         id: magribAdjustment
-                        minimumValue: -99
-                        maximumValue: 99
-                        suffix: qsTr(" Minutes")
-                    }
-                }
-
-                RowLayout {
-                    CheckBox {
-                        id: ishaEnabled
                         Layout.fillWidth: true
-                        text: qsTr("Isha")
+                        minimumValue: -20
+                        maximumValue: 20
+                        stepSize: 1
+                    }
+                    Switch {
+                        id: magribEnabled
                         checked: true
                     }
-                    SpinBox {
+
+                    Text {
+                        text: qsTr("Isha: ")
+                    }
+                    Text {
+                        text: ishaAdjustment.value.toFixed() > 0
+                              ? "+" + ishaAdjustment.value.toFixed()
+                              : ishaAdjustment.value.toFixed()
+                    }
+                    Slider {
                         id: ishaAdjustment
-                        minimumValue: -99
-                        maximumValue: 99
-                        suffix: qsTr(" Minutes")
+                        Layout.fillWidth: true
+                        minimumValue: -20
+                        maximumValue: 20
+                        stepSize: 1
+                    }
+                    Switch {
+                        id: ishaEnabled         
+                        checked: true
                     }
                 }
             }
@@ -214,7 +253,7 @@ ScrollView {
             property alias muted: muted.checked
         }
 
-        SettingEntry {
+        RowLayout {
             ColumnLayout {
                 SettingTitle {
                     text: qsTr("Location")
@@ -230,6 +269,7 @@ ScrollView {
 
                         Component.onCompleted: {
                             var arr = settingsCache.getCountries();
+                            countries.append({"name": "", "code": ""}); //Speed up and cleaner, so no auto populate cities
 
                             for(var i=0; i < arr.length; i++) {
                                 var line = arr[i].split(",");
@@ -263,7 +303,10 @@ ScrollView {
                     textRole: 'name'
                     model: ListModel { id: cities }
 
-                    Component.onCompleted: cbCities.currentIndex = -1
+                    Component.onCompleted: {
+                        cbCountries.currentIndex = -1
+                        cbCities.currentIndex = -1
+                    }
 
                     onCurrentIndexChanged: {
                         if(cbCities.currentIndex != -1) {
@@ -278,39 +321,36 @@ ScrollView {
 
                 GridLayout {
                     columns: 2
-
                     Text {
                         text: qsTr("Location")
                     }
                     TextField {
                         id: tfLocation
                         Layout.fillWidth: true
-                        text: qsTr("Mecca, Saudi Arabia")
+                        text: "Mecca, Saudi Arabia"
                     }
                     Text {
                         text: qsTr("Latitude")
                     }
                     TextField {
                         id: tfLat
-                        text: qsTr("21.42667")
+                        text: "21.42667"
                     }
                     Text {
                         text: qsTr("Longitude")
                     }
                     TextField {
                         id: tfLon
-                        text: qsTr("39.82611")
+                        text: "39.82611"
                     }
                     Text {
                         text: qsTr("GMT Offset")
                     }
-                    SpinBox {
+                    TextField {
                         id: tfGmt
-                        value: 3.0
-                        stepSize: 0.5
-                        decimals: 1
-                        maximumValue: 14.0
-                        minimumValue: -12.0
+                        property real value: 3.0
+                        text: value
+                        onTextChanged: value = text
                     }
                     Text {
                         text: qsTr("Day Light Saving");
@@ -332,7 +372,7 @@ ScrollView {
             property alias dst: dst.checked
         }
 
-        SettingEntry {
+        RowLayout {
             GridLayout {
                 columns: 2
                 SettingTitle {
@@ -344,12 +384,13 @@ ScrollView {
                 }
                 ComboBox {
                     id: mathhab
+                    Layout.fillWidth: true
                     model: ListModel {
                         ListElement {
-                            text: "Default"
+                            text: "Majority - الاكثرية"
                         }
                         ListElement {
-                            text: "Hanafi"
+                            text: "Hanafi - حنفي"
                         }
                     }
                 }
@@ -366,13 +407,13 @@ ScrollView {
                             text: "None"
                         }
                         ListElement {
-                            text: "Egyptian General Authority of Survey"
+                            text: "Egyptian GAS"
                         }
                         ListElement {
-                            text: "University of Islamic Sciences, Karachi (Shaf'i)"
+                            text: "Uni of Islamic Sciences (Shaf'i)"
                         }
                         ListElement {
-                            text: "University of Islamic Sciences, Karachi (Hanafi)"
+                            text: "Uni of Islamic Sciences (Hanafi)"
                         }
                         ListElement {
                             text: "Islamic Society of North America"
@@ -384,10 +425,10 @@ ScrollView {
                             text: "Umm Al-Qurra, Saudi Arabia"
                         }
                         ListElement {
-                            text: "Fixed Ishaa Interval (always 90)"
+                            text: "Fixed Isha Interval (always 90)"
                         }
                         ListElement {
-                            text: "Egyptian General Authority of Survey (Egypt)"
+                            text: "Egyptian GAS (Egypt)"
                         }
                     }
                 }
@@ -400,16 +441,24 @@ ScrollView {
             property alias calcMethod: algo.currentIndex
         }
 
-        SettingEntry {
+        RowLayout {
             ColumnLayout {
                 SettingTitle {
                     text: qsTr("About Munadi")
                 }
                 SettingInfo {
-                    text: qsTr("<p>Munadi - Simple Athan Program. For more info, visit <a href=\"http://munadi.org\">Munadi.org</a></p><br/>")
-                               + qsTr("Version: ") + engine.getVersionNo() + "<br/>"
+                    property string link: "http://munadi.org/"
+                    text: qsTr("Munadi - Simple Athan Program.")
+                          + "<br/>"
+                          + qsTr("For more info, visit: ")
+                          + "<a href=\"http://munadi.org/\">Munadi.org</a>\n"
+                          + "<br/>"
+                          + qsTr("Version: ") + engine.getVersionNo();
+                    onLinkActivated: Qt.openUrlExternally(link);
                 }
             }
         }
+
+        RowLayout {} // Bottom padding
     }
 }

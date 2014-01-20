@@ -12,11 +12,9 @@ GridLayout {
 
     Tuple {
         id: prayer
-        Layout.column: main.mirror === true ? 1 : 0
     }
 
     Tuple {
         id: time
-        Layout.column: main.mirror === true ? 0 : 1
     }
 }

@@ -37,7 +37,6 @@ Rectangle {
         RowLayout {
             spacing: 10
             anchors.fill: parent
-            layoutDirection: main.mirror === true ? "RightToLeft" : "LeftToRight"
 
             Button {
                 iconSource: "qrc:/img/info.png"

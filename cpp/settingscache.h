@@ -3,7 +3,6 @@
 
 #include <QtCore>
 #include <QtGui>
-#include <QtWidgets/QApplication>
 #include <QObject>
 
 #include "libitl/prayer.h"
@@ -89,6 +88,8 @@ public:
 
     Q_INVOKABLE QStringList getCities(QString cc)
     {
+        if(cc == "") return QStringList();
+
         QFile f(":/data/cities.tsv");
 
         if (!f.open(QIODevice::ReadOnly | QIODevice::Text))

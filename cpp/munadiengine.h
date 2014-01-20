@@ -3,19 +3,25 @@
 
 #include <QtGui>
 #include <QtCore>
+#include <QtMultimedia/QMediaPlayer>
+
+#if defined Q_OS_WIN || defined Q_OS_OSX
+#define DESKTOP
+#endif
+
+#define APP_VERSION "14.01"
+#define dout qDebug()
+
 #include "libitl/prayer.h"
 #include "libitl/hijri.h"
 #include "settingscache.h"
 #include <QStringList>
+
+#ifdef DESKTOP
 #include <QMenu>
 #include <QSystemTrayIcon>
+#endif
 
-
-#include <QtMultimedia/QMediaPlayer>
-
-#define dout qDebug()
-
-#define APP_VERSION "14.01"
 
 class MunadiEngine : public QObject
 {
@@ -35,7 +41,6 @@ public:
     Q_INVOKABLE QTime getAsr();
     Q_INVOKABLE QTime getMagrib();
     Q_INVOKABLE QTime getIsha();
-    Q_INVOKABLE QTime getTest();
     Q_INVOKABLE QTime getSunrise();
     Q_INVOKABLE QTime getNextPrayer();
     Q_INVOKABLE QString getHijriDate();
@@ -45,14 +50,23 @@ public:
     Q_INVOKABLE QString getTimeDifference();
     Q_INVOKABLE QString getLocationName();
     Q_INVOKABLE double getQibla();
-    Q_INVOKABLE void setStartup(bool set);
     Q_INVOKABLE void refreshSettingsCache();
     Q_INVOKABLE void setVolume(int level, bool mute);
     Q_INVOKABLE QString getVersionNo() { return APP_VERSION; }
+#ifdef DESKTOP
+    Q_INVOKABLE void setStartup(bool set);
+#endif
+
+    Q_INVOKABLE bool isRtl()
+    {
+#ifdef ARABIC
+    return true;
+#else
+    return false;
+#endif
+    }
 
     SettingsCache * settingsCache;
-    QTime testTime;
-
     QMediaPlayer * athanObject;
 
 protected:
@@ -66,10 +80,12 @@ private:
     QString nextPrayerLabel;
     QString currentPrayerLabel;
     QString hijriEvent;
+#ifdef DESKTOP
     QSystemTrayIcon * tray;
     QMenu * trayMenu;
     void createTrayMenu();
     class Updater * updater;
+#endif
 
     bool init();
 
@@ -80,8 +96,10 @@ public slots:
     void calculatePrayer();
     void showMainWindow();
     void onMediaStatusChanged(QMediaPlayer::MediaStatus);
+#ifdef DESKTOP
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
     void toggleView();
+#endif
 
 signals:
     void athanStarted();

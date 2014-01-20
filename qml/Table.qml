@@ -45,7 +45,7 @@ Rectangle {
 
         Prayer {
             id: isha
-            prayerName: qsTr("Ishaa")
+            prayerName: qsTr("Isha")
         }
 
         Rectangle {
@@ -58,7 +58,6 @@ Rectangle {
                 id: timeLeft;
                 anchors.centerIn: parent
                 font.pixelSize: parent.height / 3
-                font.italic: true
             }
         }
 
@@ -82,18 +81,18 @@ Rectangle {
 
     function updatePrayerTimes() {
 
-        fajr.prayerTime = Qt.formatTime(engine.getFajr(), "h:mm AP");
-        sunrise.prayerTime = Qt.formatTime(engine.getSunrise(), "h:mm AP");
-        duhr.prayerTime = Qt.formatTime(engine.getDuhr(), "h:mm AP");
-        asr.prayerTime = Qt.formatTime(engine.getAsr(), "h:mm AP");
-        magrib.prayerTime = Qt.formatTime(engine.getMagrib(), "h:mm AP");
-        isha.prayerTime = Qt.formatTime(engine.getIsha(), "h:mm AP");
+        fajr.prayerTime = Qt.formatTime(engine.getFajr(), "h:mm");
+        sunrise.prayerTime = Qt.formatTime(engine.getSunrise(), "h:mm");
+        duhr.prayerTime = Qt.formatTime(engine.getDuhr(), "h:mm");
+        asr.prayerTime = Qt.formatTime(engine.getAsr(), "h:mm");
+        magrib.prayerTime = Qt.formatTime(engine.getMagrib(), "h:mm");
+        isha.prayerTime = Qt.formatTime(engine.getIsha(), "h:mm");
     }
 
     function updateTimeLeft() {
         console.log("updateTimeLeft")
         if(engine.isAthanPlaying()) {
-            timeLeft.text = engine.getCurrPrayerLabel() + qsTr(" prayer time ...");
+            timeLeft.text = engine.isRtl() ? qsTr(" prayer time ...") : engine.getCurrPrayerLabel() + qsTr(" prayer time ...");
         }
         else {
             var prayerLabel = engine.getNextPrayerLabel();
@@ -102,7 +101,7 @@ Rectangle {
                 tlc.visible = false;
             } else {
                 tlc.visible = true;
-                timeLeft.text = prayerLabel + " in " + engine.getTimeDifference();
+                timeLeft.text = qsTr(prayerLabel) + qsTr(" in ") + engine.getTimeDifference();
             }
         }
     }

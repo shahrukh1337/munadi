@@ -1,13 +1,20 @@
 #include "munadiengine.h"
 #include "settingscache.h"
-#include "updater.h"
-#include <QtWidgets/QMessageBox>
+
 #include <QTime>
 #include <QSettings>
 #include <QQuickView>
 
+#ifdef DESKTOP
+
+#include "updater.h"
+#include <QtWidgets/QMessageBox>
+#include <QApplication>
+
 #ifdef Q_OS_WIN
 #include <windows.h>
+#endif
+
 #endif
 
 MunadiEngine::MunadiEngine(QQuickView *parent)
@@ -16,20 +23,22 @@ MunadiEngine::MunadiEngine(QQuickView *parent)
     , athanObject(0)
     , settingsCache(new SettingsCache())
     , timer(new QTimer(this))
+#ifdef DESKTOP
     , updater(0)
+#endif
 {
     init();
 }
 MunadiEngine::~MunadiEngine()
 {
     stopAthan();
-
+#ifdef DESKTOP
     QSettings().setValue("Window/Geometry", ((QQuickView *) parent)->geometry());
     QSettings().setValue("Window/State", ((QQuickView *) parent)->windowState());
-
+    if(updater)         delete updater;
+#endif
     if(athanObject)     delete athanObject;
     if(settingsCache)   delete settingsCache;
-    if(updater)         delete updater;
 }
 void MunadiEngine::calculatePrayer()
 {
@@ -47,18 +56,13 @@ void MunadiEngine::calculatePrayer()
 void MunadiEngine::showMainWindow()
 {
     parent->setWindowState( Qt::WindowState(parent->windowState() & ~Qt::WindowMinimized) );
-    //parent->setWindowState( Qt::WindowActive);
-    //Qt::WindowActive
     parent->show();
     parent->showNormal();
     parent->raise();  // for MacOS
-    //parent->activateWindow(); // for Windows
 }
 
 void MunadiEngine::onMediaStatusChanged(QMediaPlayer::MediaStatus status)
 {
-    //dout << "onMediaStatusChanged: " << status;
-
     switch(status)
     {
     case QMediaPlayer::EndOfMedia:
@@ -66,7 +70,7 @@ void MunadiEngine::onMediaStatusChanged(QMediaPlayer::MediaStatus status)
         break;
     }
 }
-
+#ifdef DESKTOP
 void MunadiEngine::iconActivated(QSystemTrayIcon::ActivationReason reason)
 {
     switch(reason)
@@ -86,7 +90,6 @@ void MunadiEngine::iconActivated(QSystemTrayIcon::ActivationReason reason)
         break;
     }
 }
-
 void MunadiEngine::toggleView()
 {
     if(parent->isVisible())
@@ -94,7 +97,7 @@ void MunadiEngine::toggleView()
     else
         showMainWindow();
 }
-
+#endif
 QTime MunadiEngine::getFajr()
 {
     return QTime(settingsCache->currentCity.ptList[Fajr].hour,
@@ -119,10 +122,6 @@ QTime MunadiEngine::getIsha()
 {
     return QTime(settingsCache->currentCity.ptList[Isha].hour,
                  settingsCache->currentCity.ptList[Isha].minute).addSecs(settingsCache->ishaAdjustment * 60);
-}
-QTime MunadiEngine::getTest()
-{
-    return testTime;
 }
 QTime MunadiEngine::getSunrise()
 {
@@ -153,9 +152,10 @@ void MunadiEngine::playAthan()
     currentPrayerLabel = nextPrayerLabel;
 
     athanObject->setVolume(QSettings().value("Athan/volume", 80).toInt());
+    athanObject->setMuted(QSettings().value("Athan/muted", false).toBool());
     athanObject->play();
 
-    if(QSettings().value("Window/ShowOnAthan", true).toBool())
+    if(QSettings().value("Window/showOnAthan", true).toBool())
         showMainWindow();
 
     emit athanStarted();
@@ -192,15 +192,39 @@ QString MunadiEngine::getTimeDifference()
 
     QString format;
 
-    if(time.hour() > 1)
-        format += "H 'hours' ";
-    else if(time.hour() == 1)
-        format += "H 'hour' ";
+#ifdef ARABIC
+    if(time.hour() == 1)
+        format += tr("'sa3a'");
+    else if(time.hour() == 2)
+        format += tr("'sa3atain'");
+    else if(time.hour() < 11 && time.hour() > 0)
+        format += tr("H 'sa3at'");
+    else if(time.hour() > 0)
+        format += tr("H 'sa3a'");
 
-    if(time.minute() > 1)
-        format += "m 'minutes'";
-    else if(time.minute() == 1)
-        format += "m 'minute'";
+    if(time.hour() != 0 && time.minute() != 0)    format += tr(" wa ");
+
+    if(time.minute() == 1)
+        format += tr("'dakika'");
+    else if(time.minute() == 2)
+        format += tr("'dakikatan'");
+    else if(time.minute() < 11 && time.minute() > 0)
+        format += tr("m 'dakayek'");
+    else if(time.minute() > 0)
+        format += tr("m 'dakika'");
+#else
+    if(time.hour() == 1)
+        format += ("'an hour'");
+    else if(time.hour() > 1)
+        format += ("H 'hours'");
+
+    if(time.hour() != 0 && time.minute() != 0)    format += (" 'and' ");
+
+    if(time.minute() == 1)
+        format += ("'a minute'");
+    else if(time.minute() > 1)
+        format += ("m 'minutes'");
+#endif
 
     return time.toString(format);
 }
@@ -211,79 +235,79 @@ QTime MunadiEngine::getNextPrayer()
 
     if(currentTime <= getFajr() && settingsCache->fajrEnabled)
     {
-        dout<< "HIT FAJR";
+        //dout<< "HIT FAJR";
 
-        nextPrayerLabel = "Fajr";
+        nextPrayerLabel = tr("Fajr");
         return getFajr();
     }
     else if(currentTime <= getDuhr() && settingsCache->duhrEnabled)
     {
-        dout<< "HIT THUHR";
+        //dout<< "HIT THUHR";
 
-        nextPrayerLabel = "Duhr";
+        nextPrayerLabel = tr("Duhr");
         return getDuhr();
     }
     else if(currentTime <= getAsr() && settingsCache->asrEnabled)
     {
-        dout<< "HIT ASR";
+        //dout<< "HIT ASR";
 
-        nextPrayerLabel = "Asr";
+        nextPrayerLabel = tr("Asr");
         return getAsr();
     }
     else if(currentTime <= getMagrib() && settingsCache->magribEnabled)
     {
-        dout<< "HIT MAGRIB";
+        //dout<< "HIT MAGRIB";
 
-        nextPrayerLabel = "Magrib";
+        nextPrayerLabel = tr("Magrib");
         return getMagrib();
     }
     else if(currentTime <= getIsha() && settingsCache->ishaEnabled)
     {
-        dout<< "HIT ISHA";
+        //dout<< "HIT ISHA";
 
-        nextPrayerLabel = "Isha";
+        nextPrayerLabel = tr("Isha");
         return getIsha();
     }
     else
     {
         if(settingsCache->fajrEnabled)  // This is need again, hard to explain why!!!
         {
-            dout<< "HIT FAJR L";
+            //dout<< "HIT FAJR L";
 
-            nextPrayerLabel = "Fajr";
+            nextPrayerLabel = tr("Fajr");
             return getFajr();
         }
         else if(settingsCache->duhrEnabled)
         {
-            dout<< "HIT DUHR L";
+            //dout<< "HIT DUHR L";
 
-            nextPrayerLabel = "Duhr";
+            nextPrayerLabel = tr("Duhr");
             return getDuhr();
         }
         else if(settingsCache->asrEnabled)
         {
-            dout<< "HIT ASR L";
+            //dout<< "HIT ASR L";
 
-            nextPrayerLabel = "Asr";
+            nextPrayerLabel = tr("Asr");
             return getAsr();
         }
         else if(settingsCache->magribEnabled)
         {
-            dout<< "HIT MAGRIB L";
+            //dout<< "HIT MAGRIB L";
 
-            nextPrayerLabel = "Magrib";
+            nextPrayerLabel = tr("Magrib");
             return getMagrib();
         }
         else if(settingsCache->ishaEnabled)
         {
-            dout<< "HIT ISHA L";
+            //dout<< "HIT ISHA L";
 
-            nextPrayerLabel = "Isha";
+            nextPrayerLabel =tr( "Isha");
             return getIsha();
         }
         else
         {
-            dout<< "NONE";
+            //dout<< "NONE";
 
             nextPrayerLabel = "";
             return QTime();
@@ -303,8 +327,6 @@ QString MunadiEngine::getCurrPrayerLabel()
 
 void MunadiEngine::checkAthan()
 {
-    //dout << "checkAthan() called";
-
     calculatePrayer();
 
     QTime nextPrayer = getNextPrayer();
@@ -350,7 +372,6 @@ QString MunadiEngine::getHijriDate()
     for (int i = 0; hDate.event[i] != NULL; i++)
     {
        //printf("  Day's Event      - %s\n", mydate.event[i]);
-
         hijriEvent.append(hDate.event[i]);
     }
     free(hDate.event);
@@ -360,12 +381,9 @@ QString MunadiEngine::getHijriDate()
 
 QString MunadiEngine::getHijriEvent()
 {
-    if(hijriEvent == "")
-        return "Subhan Allah, Alhamdulliah, Allahuakbar";
-    else
-        return hijriEvent;
+    return hijriEvent;
 }
-
+#ifdef DESKTOP
 void MunadiEngine::createTrayMenu()
 {
     trayMenu->addAction("Play Athan", this, SLOT(playAthan()));
@@ -396,7 +414,7 @@ void MunadiEngine::setStartup(bool set)
     }
 #endif
 }
-
+#endif
 void MunadiEngine::refreshSettingsCache()
 {
     settingsCache->refresh();
@@ -421,7 +439,6 @@ bool MunadiEngine::eventFilter(QObject * object, QEvent * event)
 
         if ( (e->oldState() != Qt::WindowMinimized) && (parent->windowState() & Qt::WindowMinimized) )
         {
-            dout << ".... we here";
             QTimer::singleShot(0, parent, SLOT(hide()));
             event->ignore();
         }
@@ -433,9 +450,12 @@ bool MunadiEngine::eventFilter(QObject * object, QEvent * event)
 bool MunadiEngine::init()
 {
     QSettings qSettings;
+#ifdef DESKTOP
     QString athanFile = QApplication::applicationDirPath() + "/audio/athan.mp3";
-    dout << "Athan file: " << athanFile;
-    dout << "libPaths: " << QApplication::libraryPaths();
+#endif
+#ifdef Q_OS_ANDROID
+    QString athanFile = "assets:/audio/athan.ogg";
+#endif
 
     if( (athanObject = new QMediaPlayer()) == 0)    exit(1);
     athanObject->setMedia(QUrl::fromLocalFile((athanFile)));
@@ -451,13 +471,12 @@ bool MunadiEngine::init()
     connect(timer, SIGNAL(timeout()), this, SLOT(checkAthan()));
     connect(athanObject, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)),
             this, SLOT(onMediaStatusChanged(QMediaPlayer::MediaStatus)));
+#ifdef DESKTOP
+    parent->setGeometry(qSettings.value("Window/geometry",QRect(400,300,300,450)).toRect());
+    parent->setWindowState( (Qt::WindowState) qSettings.value("Window/state",0).toInt());
+    setStartup(qSettings.value("General/autoStartUp", true).toBool());
 
-    parent->setGeometry(qSettings.value("Window/Geometry",QRect(400,300,300,450)).toRect());
-    parent->setWindowState( (Qt::WindowState) qSettings.value("Window/State",0).toInt());
-
-    setStartup(qSettings.value("General/AutoStartUp", true).toBool());
-
-    if(qSettings.value("General/CheckForUpdates", true).toBool())
+    if(qSettings.value("General/checkForUpdates", true).toBool())
         updater = new Updater();
 
     trayMenu = new QMenu("trayMenu");
@@ -466,15 +485,13 @@ bool MunadiEngine::init()
     tray = new QSystemTrayIcon(QIcon(":/img/munadi.png"), this);
     tray->setContextMenu(trayMenu);
     tray->show();
-
+#endif
     parent->setTitle(tr("Munadi"));
 
 #ifdef Q_OS_WIN //Mac doesn't like this
     connect(tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
-#endif
 
-#ifdef Q_OS_WIN
     CreateMutex(0, true, L"99da0a5f-1f0d-4e14-97f6-b0919b9ec9cd");
 
     if (GetLastError() == ERROR_ALREADY_EXISTS)

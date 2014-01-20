@@ -10,6 +10,7 @@ Rectangle {
         anchors.horizontalCenter: parent.horizontalCenter
         text: qsTr("Qibla Direction")
         font.pixelSize: Font.pixelSize * parent.scale
+        font.pointSize: 16
     }
     Rectangle {
         id: compass
@@ -56,6 +57,7 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.margins: 20
         anchors.horizontalCenter: parent.horizontalCenter
-        text: qsTr(engine.getQibla().toFixed(4) + "° with respect to North")
+        font.pointSize: 16
+        text: qsTr(engine.getQibla().toFixed(4) + "° " + qsTr("with respect to North"))
     }
 }
