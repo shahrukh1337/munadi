@@ -386,12 +386,12 @@ QString MunadiEngine::getHijriEvent()
 #ifdef DESKTOP
 void MunadiEngine::createTrayMenu()
 {
-    trayMenu->addAction("Play Athan", this, SLOT(playAthan()));
-    trayMenu->addAction("Stop Athan", this, SLOT(stopAthan()));
+    trayMenu->addAction(tr("Play Athan"), this, SLOT(playAthan()));
+    trayMenu->addAction(tr("Stop Athan"), this, SLOT(stopAthan()));
     trayMenu->addSeparator();
-    trayMenu->addAction("Toggle Visiblity", this, SLOT(toggleView()));
+    trayMenu->addAction(tr("Toggle Visiblity"), this, SLOT(toggleView()));
     trayMenu->addSeparator();
-    trayMenu->addAction("Close Munadi", parent, SLOT(close()));
+    trayMenu->addAction(tr("Close Munadi"), parent, SLOT(close()));
 }
 
 void MunadiEngine::setStartup(bool set)

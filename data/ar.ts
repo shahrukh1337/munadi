@@ -148,17 +148,37 @@
         <translation>العشاء</translation>
     </message>
     <message>
-        <location filename="../cpp/munadiengine.cpp" line="489"/>
+        <location filename="../cpp/munadiengine.cpp" line="389"/>
+        <source>Play Athan</source>
+        <translation>أذن</translation>
+    </message>
+    <message>
+        <location filename="../cpp/munadiengine.cpp" line="390"/>
+        <source>Stop Athan</source>
+        <translation>اوقف الاذان</translation>
+    </message>
+    <message>
+        <location filename="../cpp/munadiengine.cpp" line="392"/>
+        <source>Toggle Visiblity</source>
+        <translation>اقلب العرض</translation>
+    </message>
+    <message>
+        <location filename="../cpp/munadiengine.cpp" line="394"/>
+        <source>Close Munadi</source>
+        <translation>اغلق منادي</translation>
+    </message>
+    <message>
+        <location filename="../cpp/munadiengine.cpp" line="491"/>
         <source>Munadi</source>
         <translation>منادي</translation>
     </message>
     <message>
-        <location filename="../cpp/munadiengine.cpp" line="500"/>
+        <location filename="../cpp/munadiengine.cpp" line="502"/>
         <source>Munadi Is Running</source>
         <translation>منادي مفتوح</translation>
     </message>
     <message>
-        <location filename="../cpp/munadiengine.cpp" line="501"/>
+        <location filename="../cpp/munadiengine.cpp" line="503"/>
         <source>You cannot start more than one instance of Munadi.</source>
         <translation>لا تستطيع تشغيل اكثر من منادي واحد</translation>
     </message>
@@ -387,7 +407,7 @@
 <context>
     <name>Updater</name>
     <message>
-        <location filename="../cpp/updater.cpp" line="47"/>
+        <location filename="../cpp/updater.cpp" line="53"/>
         <source>Munadi Update Available</source>
         <translation>تحديث متواجد</translation>
     </message>
