@@ -33,8 +33,8 @@ MunadiEngine::~MunadiEngine()
 {
     stopAthan();
 #ifdef DESKTOP
-    QSettings().setValue("Window/Geometry", ((QQuickView *) parent)->geometry());
-    QSettings().setValue("Window/State", ((QQuickView *) parent)->windowState());
+    QSettings().setValue("Window/geometry", ((QQuickView *) parent)->geometry());
+    QSettings().setValue("Window/state", ((QQuickView *) parent)->windowState());
     if(updater)         delete updater;
 #endif
     if(athanObject)     delete athanObject;
@@ -456,6 +456,8 @@ bool MunadiEngine::init()
 #ifdef Q_OS_ANDROID
     QString athanFile = "assets:/audio/athan.ogg";
 #endif
+
+    dout << "Athan file: " << athanFile;
 
     if( (athanObject = new QMediaPlayer()) == 0)    exit(1);
     athanObject->setMedia(QUrl::fromLocalFile((athanFile)));

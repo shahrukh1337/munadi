@@ -168,7 +168,7 @@
     <message>
         <location filename="../qml/Settings.qml" line="25"/>
         <source>Show on Athan?</source>
-        <translation>أظهر عند ألاذان؟</translation>
+        <translation>عند ألاذان</translation>
     </message>
     <message>
         <source>Munadi window will pop up during Athan if on.</source>
@@ -177,7 +177,7 @@
     <message>
         <location filename="../qml/Settings.qml" line="47"/>
         <source>Start up?</source>
-        <translation>تشغيل مع الحاسوب؟</translation>
+        <translation>فتح الحاسوب</translation>
     </message>
     <message>
         <source>Munadi will open when computer starts if on.</source>
@@ -186,7 +186,7 @@
     <message>
         <location filename="../qml/Settings.qml" line="64"/>
         <source>Check for updates</source>
-        <translation>البحث عن تحديث</translation>
+        <translation>تحديث</translation>
     </message>
     <message>
         <source>Munadi will check for any updates when it starts.</source>
@@ -329,7 +329,7 @@
     <message>
         <location filename="../qml/Settings.qml" line="453"/>
         <source>For more info, visit: </source>
-        <translation>لمزيد من المعلومات, زر: </translation>
+        <translation>لمزيد من المعلومات: </translation>
     </message>
     <message>
         <source>&lt;p&gt;Munadi - Simple Athan Program. For more info, visit &lt;a href=&quot;http://munadi.org&quot;&gt;Munadi.org&lt;/a&gt;&lt;/p&gt;&lt;br/&gt;</source>

@@ -96,10 +96,8 @@ public slots:
     void calculatePrayer();
     void showMainWindow();
     void onMediaStatusChanged(QMediaPlayer::MediaStatus);
-#ifdef DESKTOP
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
     void toggleView();
-#endif
 
 signals:
     void athanStarted();

@@ -14,7 +14,7 @@ QML_IMPORT_PATH = ./
 CONFIG += qt
 DEFINES += ARABIC
 
-win32 {
+win32 || mac {
 QT += core gui multimedia widgets network
 }
 
